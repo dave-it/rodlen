@@ -1,0 +1,76 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Timer Control</h1>
+
+    <button onclick="setOffset(0)">Top 10</button>
+    <button onclick="setOffset(10)">Top 20</button>
+    <button onclick="setOffset(20)">Top 30</button>
+
+
+   <h2>Athletes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Nation</th>
+                <th>Birthdate</th>
+                <th>Start Number</th>
+                <th>Runtime</th>
+                <th>Split 1</th>
+                <th>Split 2</th>
+                <th>Split 3</th>
+                <th>Split 4</th>
+                <th>Split 5</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for athlete in athletes %}
+                <tr>
+                    <td>{{ athlete['first_name'] }} {{ athlete['last_name'] }}</td>
+                    <td>{{ athlete['nation'] }}</td>
+                    <td>{{ athlete['birthdate'] }}</td>
+                    <td>{{ athlete['start_number'] }}</td>
+                    <td id="runtime-{{ athlete['start_number'] }}">{{ athlete['runtime'] }}</td>
+                    <td>{{ athlete['split1'] }}</td>
+                    <td>{{ athlete['split2'] }}</td>
+                    <td>{{ athlete['split3'] }}</td>
+                    <td>{{ athlete['split4'] }}</td>
+                    <td>{{ athlete['split5'] }}</td>
+                    <td>
+                        <div class="start-button" data-start-number="{{ athlete['start_number'] }}">
+                            Start Timer
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form action="/stop" method="post">
+        <button type="submit">Stop Timer</button>
+    </form>
+
+    <div id="timer"></div>
+
+     <h2>Upload CSV</h2>
+        <form action="{{ url_for('import_csv') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv" required>
+            <button type="submit">Upload CSV</button>
+        </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+</body>
+</html>
